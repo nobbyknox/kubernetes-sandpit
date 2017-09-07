@@ -1,0 +1,23 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-node
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hello-node
+    spec:
+      containers:
+      - name: hello-node
+        image: gcr.io/valid-gizmo-179115/hello-node:v4
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /hello_node_volume
+          name: hello-volume
+      volumes:
+      - name: hello-volume
+        persistentVolumeClaim:
+          claimName: tiny-claim

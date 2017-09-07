@@ -1,5 +1,9 @@
 # Kubernetes
 
+## Resources
+
+* https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/
+
 ## Some Notes on K8S
 
 ```bash
