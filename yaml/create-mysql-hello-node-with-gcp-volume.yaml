@@ -57,7 +57,10 @@ spec:
     spec:
       containers:
       - name: hello-node
-        image: gcr.io/valid-gizmo-179115/hello-node:v4
+        image: gcr.io/valid-gizmo-179115/hello-node:v6
+        env:
+        - name: HELLO_MESSAGE
+          value: Hello whole world!
         ports:
         - containerPort: 8080
         volumeMounts:
