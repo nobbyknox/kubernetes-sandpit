@@ -3,8 +3,11 @@
 ## Some Notes on K8S
 
 ```bash
-# start minikube (single node kubernetes cluster)
-$ minikube start
+# show the current context
+$ kubectl config current-context
+
+# list contexts
+$ kubectl config get-contexts
 
 $ docker pull ghost:latest
 
@@ -47,19 +50,34 @@ $ kubectl describe services/my-nginx
 
 # Describe the deployment
 $ kubectl describe deployment/my-nginx
-
-
-
-$ minikube stop
 ```
 
 ## Google Cloud Platform Notes
 
 ```bash
+# list projects
+$ gcloud projects list
+
+# update kubectl config to point to kubectl to Container Engine Cluster
 $ gcloud container clusters get-credentials cluster-1 --zone us-east1-b
+
+# list clusters in us-east1-b zone
 $ gcloud container clusters list --zone us-east1-b
 
+# list disks
+$ gcloud compute disks list
+
 $ kubectl run kubernetes-bootcamp --image=docker.io/jocatalin/kubernetes-bootcamp:v1 --port=8080
+```
+
+### Pushing Docker Images
+
+```bash
+$ docker tag hello-node:v4 gcr.io/valid-gizmo-179115/hello-node:v4
+$ gcloud docker -- push gcr.io/valid-gizmo-179115/hello-node:v4
+
+# list image tags
+$ gcloud container images list-tags gcr.io/valid-gizmo-179115/hello-node
 ```
 
 ## Minikube

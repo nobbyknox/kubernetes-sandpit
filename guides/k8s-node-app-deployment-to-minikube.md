@@ -1,25 +1,31 @@
 # Create Node.js App and Deploy to Minikube
 
-Check out https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/
+Check out
+
+* https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/
+* https://kubernetes.io/docs/concepts/storage/volumes/
 
 ## create server.js
 
 ```javascript
-var http = require('http');
+const http = require('http');
 
-var handleRequest = function(request, response) {
+const handleRequest = function(request, response) {
   console.log('Received request for URL: ' + request.url);
   response.writeHead(200);
   response.end('Hello World!');
 };
-var www = http.createServer(handleRequest);
+
+const www = http.createServer(handleRequest);
+
 www.listen(8080);
 ```
 
 ## Create Dockerfile
 
-```
+```dockerfile
 FROM node:8.4.0
+VOLUME ["/hello_node_volume"]
 EXPOSE 8080
 COPY server.js .
 CMD node server.js
