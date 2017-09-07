@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: my-ghost
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        run: my-ghost
+    spec:
+      containers:
+      - name: my-ghost
+        image: ghost:latest
+        ports:
+        - containerPort: 2368
+

@@ -1,0 +1,24 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-node
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: hello-node
+    spec:
+      containers:
+      - name: hello-node
+        image: hello-node:v3
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /hello_node_volume
+          name: hello-volume
+      volumes:
+      - name: hello-volume
+        hostPath:
+          path: /tmp/data/hello_node_volume
+
