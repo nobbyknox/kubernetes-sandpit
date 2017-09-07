@@ -84,6 +84,14 @@ $ gcloud docker -- push gcr.io/valid-gizmo-179115/hello-node:v4
 $ gcloud container images list-tags gcr.io/valid-gizmo-179115/hello-node
 ```
 
+### Image Updates
+
+```bash
+$ kubectl rolling-update hello-node --image=gcr.io/valid-gizmo-179115/hello-node:v6
+
+$ kubectl set image deployments hello-node hello-node=gcr.io/valid-gizmo-179115/hello-node:v6
+```
+
 ## Minikube
 
 Some useful minikube commands:
