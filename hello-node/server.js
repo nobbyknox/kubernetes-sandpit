@@ -9,3 +9,5 @@ const handleRequest = function(request, response) {
 const www = http.createServer(handleRequest);
 
 www.listen(8080);
+
+console.log('server.js version "2017-09-08 12:00" started');

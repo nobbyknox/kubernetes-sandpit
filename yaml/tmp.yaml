@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - image: rabbitmq:3-management
+        name: rabbitmq
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: rabbit
+        - name: RABBITMQ_DEFAULT_PASS
+          value: rabbit
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 4369
+          name: epmd
+        - containerPort: 15672
+          name: management
+        - containerPort: 25672
+          name: rabbitmq-dist
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  ports:
+  - port: 5672
+    name: amqp
+  - port: 4369
+    name: epmd
+  - port: 15672
+    name: management
+  - port: 25672
+    name: rabbitmq-dist
+  selector:
+    app: rabbitmq
+  clusterIP: None

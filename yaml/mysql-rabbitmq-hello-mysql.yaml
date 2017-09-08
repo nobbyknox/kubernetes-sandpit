@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: tiny-claim
+  name: alpha-claim
 spec:
   storageClassName: standard
   accessModes:
@@ -47,26 +47,26 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: hello-node
+  name: hello-mysql
 spec:
-  replicas: 2
+  replicas: 4
   template:
     metadata:
       labels:
-        run: hello-node
+        run: hello-mysql
     spec:
       containers:
-      - name: hello-node
-        image: gcr.io/valid-gizmo-179115/hello-node:v6
+      - name: hello-mysql
+        image: hello-mysql:latest
         env:
         - name: HELLO_MESSAGE
           value: Hello whole world!
         ports:
         - containerPort: 8080
         volumeMounts:
-        - mountPath: /hello_node_volume
+        - mountPath: /hello-mysql-volume
           name: hello-volume
       volumes:
       - name: hello-volume
         persistentVolumeClaim:
-          claimName: tiny-claim
+          claimName: alpha-claim

@@ -1,0 +1,121 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tiny-claim
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        ports:
+        - containerPort: 3306
+          name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-node
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        run: hello-node
+    spec:
+      containers:
+      - name: hello-node
+        image: hello-node:2017-09-08_10-07-29
+        env:
+        - name: HELLO_MESSAGE
+          value: Hello whole world!
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /hello-node-volume
+          name: hello-volume
+      volumes:
+      - name: hello-volume
+        persistentVolumeClaim:
+          claimName: tiny-claim
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - image: rabbitmq:3-management
+        name: rabbitmq
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: rabbit
+        - name: RABBITMQ_DEFAULT_PASS
+          value: rabbit
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 4369
+          name: epmd
+        - containerPort: 15672
+          name: management
+        - containerPort: 25672
+          name: rabbitmq-dist
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  ports:
+  - port: 5672
+    name: amqp
+  - port: 4369
+    name: epmd
+  - port: 15672
+    name: management
+  - port: 25672
+    name: rabbitmq-dist
+  selector:
+    app: rabbitmq
+  clusterIP: None

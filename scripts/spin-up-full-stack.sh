@@ -1,2 +1,2 @@
 #!/bin/bash
-kubectl create -f ../yaml/create-mysql-hello-node-with-gcp-volume.yaml
+kubectl create -f ../yaml/hello-node.yaml

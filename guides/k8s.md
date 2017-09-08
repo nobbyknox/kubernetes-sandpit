@@ -77,8 +77,9 @@ $ kubectl run kubernetes-bootcamp --image=docker.io/jocatalin/kubernetes-bootcam
 ### Pushing Docker Images
 
 ```bash
-$ docker tag hello-node:v4 gcr.io/valid-gizmo-179115/hello-node:v4
-$ gcloud docker -- push gcr.io/valid-gizmo-179115/hello-node:v4
+$ docker build -t hello-node:v6 .
+$ docker tag hello-node:v6 gcr.io/valid-gizmo-179115/hello-node:v6
+$ gcloud docker -- push gcr.io/valid-gizmo-179115/hello-node:v6
 
 # list image tags
 $ gcloud container images list-tags gcr.io/valid-gizmo-179115/hello-node
