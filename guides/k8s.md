@@ -54,6 +54,9 @@ $ kubectl describe services/my-nginx
 
 # Describe the deployment
 $ kubectl describe deployment/my-nginx
+
+# Port forwarding for RabbitMQ
+$ kubectl port-forward $POD_NAME 5672:5672 15672:15672
 ```
 
 ## Google Cloud Platform Notes
@@ -107,3 +110,8 @@ $ minikube stop
 # ssh into the minikube
 $ minikube ssh
 ```
+
+## Helm
+
+* https://helm.sh
+* https://docs.helm.sh/using_helm/#quickstart-guide

@@ -1,48 +1,67 @@
-apiVersion: apps/v1beta1
 kind: Deployment
+apiVersion: extensions/v1beta1
 metadata:
   name: rabbitmq
 spec:
-  strategy:
-    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
   template:
     metadata:
       labels:
         app: rabbitmq
     spec:
       containers:
-      - image: rabbitmq:3-management
-        name: rabbitmq
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+        - name: epmd
+          containerPort: 4369
+          protocol: TCP
+        - name: amqp
+          containerPort: 5672
+          protocol: TCP
+        - name: dist
+          containerPort: 25672
+          protocol: TCP
+        - name: stats
+          containerPort: 15672
+          protocol: TCP
         env:
         - name: RABBITMQ_DEFAULT_USER
           value: rabbit
         - name: RABBITMQ_DEFAULT_PASS
           value: rabbit
-        ports:
-        - containerPort: 5672
-          name: amqp
-        - containerPort: 4369
-          name: epmd
-        - containerPort: 15672
-          name: management
-        - containerPort: 25672
-          name: rabbitmq-dist
-
+        - name: RABBITMQ_MANAGER_PORT_NUMBER
+          value: '15672'
+  strategy:
+    type: Recreate
 ---
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
   name: rabbitmq
+  labels:
+    app: rabbitmq
 spec:
   ports:
-  - port: 5672
-    name: amqp
-  - port: 4369
-    name: epmd
-  - port: 15672
-    name: management
-  - port: 25672
-    name: rabbitmq-dist
+  - name: epmd
+    protocol: TCP
+    port: 4369
+    targetPort: epmd
+  - name: amqp
+    protocol: TCP
+    port: 5672
+    targetPort: amqp
+  - name: dist
+    protocol: TCP
+    port: 25672
+    targetPort: dist
+  - name: stats
+    protocol: TCP
+    port: 15672
+    targetPort: stats
   selector:
     app: rabbitmq
   clusterIP: None

@@ -53,7 +53,7 @@ spec:
   template:
     metadata:
       labels:
-        run: hello-node
+        app: hello-node
     spec:
       containers:
       - name: hello-node
