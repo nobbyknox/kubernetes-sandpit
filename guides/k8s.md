@@ -3,6 +3,8 @@
 ## Resources
 
 * https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/
+* https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/
+* https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/
 
 ## Some Notes on K8S
 
@@ -109,6 +111,12 @@ $ minikube stop
 
 # ssh into the minikube
 $ minikube ssh
+
+# Use minikube docker host
+$ eval $(minikube docker-env)
+
+# Unset minikube docker host
+$ eval $(minikube docker-env -u)
 ```
 
 ## Helm
